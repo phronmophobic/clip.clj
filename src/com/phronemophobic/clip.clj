@@ -28,6 +28,10 @@
                  (raw/delete_clip_image_f32 ptr)))
     img*))
 
+(defn create-context [model-path]
+  (assert (string? model-path))
+  (raw/clip_model_load model-path 0))
+
 (defn image-embedding [ctx f]
   (let [f (io/as-file f)
         path (.getCanonicalPath f)
@@ -101,7 +105,7 @@
     (def model-path
       "models/CLIP-ViT-B-32-laion2B-s34B-b79K_ggml-model-f16.gguf")
 
-    (def ctx (raw/clip_model_load model-path 1)))
+    (def ctx (create-context model-path)))
   (text-embedding ctx "hello")
   (image-embedding ctx "aimages/005bce0c-710f-4b3d-8c94-5be8d86585e9.jpg")
 
