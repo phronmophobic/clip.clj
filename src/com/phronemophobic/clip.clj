@@ -5,6 +5,7 @@
             [clojure.string :as str])
   (:import com.sun.jna.ptr.FloatByReference
            com.sun.jna.Memory
+           com.sun.jna.Structure
            com.sun.jna.Pointer
            java.lang.ref.Cleaner)
   (:gen-class))
