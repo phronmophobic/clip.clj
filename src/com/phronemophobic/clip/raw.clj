@@ -29,21 +29,6 @@
 (def ^:no-doc lib-clip
   (com.sun.jna.NativeLibrary/getInstance "clip" lib-options))
 
-(def arguments
-  [ "-resource-dir"
- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0"
- "-isysroot"
- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
- "-I/usr/local/include"
- "-internal-isystem"
- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include"
- "-internal-isystem"
- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include"
- "-internal-externc-isystem"
- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
- "-internal-externc-isystem"
- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"])
-
 (defn ^:private dump-api []
   (let [outf (io/file
               "resources"
@@ -55,17 +40,16 @@
     (with-open [w (io/writer outf)]
       (write-edn w
                  ((requiring-resolve 'com.phronemophobic.clong.clang/easy-api)
-                  "/Users/adrian/workspace/clip.cpp/clip.h"
-                  arguments)))))
+                  "/Users/adrian/workspace/clip.cpp/clip.h")))))
 
 
 (def api
-  ((requiring-resolve 'com.phronemophobic.clong.clang/easy-api) "/Users/adrian/workspace/clip.cpp/clip.h"
+  #_((requiring-resolve 'com.phronemophobic.clong.clang/easy-api) "/Users/adrian/workspace/clip.cpp/clip.h"
    #_(into arguments
          ["-I/Users/adrian/workspace/clip.cpp/"])) 
-  #_(with-open [rdr (io/reader
+  (with-open [rdr (io/reader
                      (io/resource
-                      "com/phronemophobic/tree-sitter/api.edn"))
+                      "com/phronemophobic/clip/api.edn"))
                 rdr (java.io.PushbackReader. rdr)]
       (edn/read rdr)))
 
