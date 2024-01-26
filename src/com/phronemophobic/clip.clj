@@ -28,11 +28,17 @@
                  (raw/delete_clip_image_f32 ptr)))
     img*))
 
-(defn create-context [model-path]
+(defn create-context
+  "Creates a context using model at `model-path`."
+  [model-path]
   (assert (string? model-path))
   (raw/clip_model_load model-path 0))
 
-(defn image-embedding [ctx f]
+(defn image-embedding
+  "Returns an embedding for image at `f` as a float array.
+
+  `f` should be something that can be coerced via `clojure.java.io/as-file`."
+  [ctx f]
   (let [f (io/as-file f)
         path (.getCanonicalPath f)
 
@@ -68,7 +74,9 @@
     (.getFloatArray img-vec 0 vec-dim)))
 
 
-(defn text-embedding [ctx text]
+(defn text-embedding
+  "Returns an embedding for `text` as a float array."
+  [ctx text]
   (let [tokens* (clip_tokensByReference.)
         _ (raw/clip_tokenize ctx text tokens*)
 
@@ -88,7 +96,11 @@
                              :text text})))]
     (.getFloatArray vec 0 vec-dim)))
 
-(defn cosine-similarity [^floats emb1 ^floats emb2]
+(defn cosine-similarity
+  "Returns the cosine similarity between two embeddings as a float in [0.0, 1.0].
+
+  The embeddings should be float arrays."
+  [^floats emb1 ^floats emb2]
   (let [num (alength emb1)]
     (loop [dot-product (float 0)
            n 0]
