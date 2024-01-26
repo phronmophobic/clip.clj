@@ -12,7 +12,7 @@
 
 (raw/import-structs!)
 
-(defn make-clip-image-u8 []
+(defn ^:private make-clip-image-u8 []
   (let [img* (raw/make_clip_image_u8)
         ptr (.getPointer ^Structure img*)]
     (.register ^Cleaner raw/cleaner img*
@@ -20,7 +20,7 @@
                  (raw/delete_clip_image_u8 ptr)))
     img*))
 
-(defn make-clip-image-f32 []
+(defn ^:private make-clip-image-f32 []
   (let [img* (raw/make_clip_image_f32)
         ptr (.getPointer ^Structure img*)]
     (.register ^Cleaner raw/cleaner img*
