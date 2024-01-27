@@ -4,8 +4,6 @@ CLIP Embeddings for images and text. A clojure wrapper for [clip.cpp](https://gi
 
 ## Dependency
 
-For llama.clj with required native dependencies:
-
 ```clojure
 com.phronemophobic/clip-clj {:mvn/version "1.1"}
 ;; native deps
