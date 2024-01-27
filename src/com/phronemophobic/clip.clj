@@ -11,6 +11,9 @@
   (:gen-class))
 
 (raw/import-structs!)
+(def ^:dynamic *num-threads*
+  "Number of threads to use when creating embeddings."
+  1)
 
 (defn ^:private make-clip-image-u8 []
   (let [img* (raw/make_clip_image_u8)
@@ -67,7 +70,7 @@
                   vec-dim))
         _ (when (zero?
                  (raw/clip_image_encode
-                  ctx 8 img-res* img-vec 1))
+                  ctx *num-threads* img-res* img-vec 1))
             (throw (ex-info "Could not encode image."
                             {:ctx ctx
                              :f f})))]
@@ -90,7 +93,7 @@
               ;; vec-dim floats
               vec-dim))
         _ (when (zero?
-                 (raw/clip_text_encode ctx 8 tokens* vec 1))
+                 (raw/clip_text_encode ctx *num-threads* tokens* vec 1))
             (throw (ex-info "Could not encode text."
                             {:ctx ctx
                              :text text})))]
