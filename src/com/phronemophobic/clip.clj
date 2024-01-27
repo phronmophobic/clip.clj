@@ -35,7 +35,12 @@
   "Creates a context using model at `model-path`."
   [model-path]
   (assert (string? model-path))
-  (raw/clip_model_load model-path 0))
+  (let [ctx (raw/clip_model_load model-path 0)
+        ptr (Pointer/nativeValue ctx)]
+    (.register ^Cleaner raw/cleaner ctx
+               (fn []
+                 (raw/clip_free (Pointer. ptr))))
+    ctx))
 
 (defn image-embedding
   "Returns an embedding for image at `f` as a float array.
