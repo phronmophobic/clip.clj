@@ -4,8 +4,6 @@ CLIP Embeddings for images and text. A clojure wrapper for [clip.cpp](https://gi
 
 ## Dependency
 
-For llama.clj with required native dependencies:
-
 ```clojure
 com.phronemophobic/clip-clj {:mvn/version "1.1"}
 ;; native deps
@@ -15,8 +13,6 @@ com.phronemophobic.cljonda/clip-cpp-darwin-x86-64 {:mvn/version "45cc1cab442b3bb
 ```
 
 ## Quick Start
-
-If you're just looking for a model to try things out, try the 3.6Gb [llama2 7B chat model](https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGML/tree/main)  from TheBloke. Make sure to check the link for important info like license and use policy.
 
 Download a model:
 
