@@ -9,9 +9,9 @@ For llama.clj with required native dependencies:
 ```clojure
 com.phronemophobic/clip-clj {:mvn/version "1.0"}
 ;; native deps
-com.phronemophobic.cljonda/clip-cpp-linux-x86-64 {:mvn/version "8f348725271db67517de871dea4a4e8a159e664f"}
+com.phronemophobic.cljonda/clip-cpp-linux-x86-64 {:mvn/version "45cc1cab442b3bb019dadce8dcba04d76e99e9c3"}
 com.phronemophobic.cljonda/clip-cpp-darwin-aarch64 {:mvn/version "45cc1cab442b3bb019dadce8dcba04d76e99e9c3"}
-com.phronemophobic.cljonda/clip-cpp-darwin-x86-64 {:mvn/version "8f348725271db67517de871dea4a4e8a159e664f"}
+com.phronemophobic.cljonda/clip-cpp-darwin-x86-64 {:mvn/version "45cc1cab442b3bb019dadce8dcba04d76e99e9c3"}
 ```
 
 ## Quick Start
