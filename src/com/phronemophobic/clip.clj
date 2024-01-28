@@ -16,19 +16,19 @@
   1)
 
 (defn ^:private make-clip-image-u8 []
-  (let [img* (raw/make_clip_image_u8)
+  (let [img* (raw/clip_image_u8_make)
         ptr (.getPointer ^Structure img*)]
     (.register ^Cleaner raw/cleaner img*
                (fn []
-                 (raw/delete_clip_image_u8 ptr)))
+                 (raw/clip_image_u8_free ptr)))
     img*))
 
 (defn ^:private make-clip-image-f32 []
-  (let [img* (raw/make_clip_image_f32)
+  (let [img* (raw/clip_image_f32_make)
         ptr (.getPointer ^Structure img*)]
     (.register ^Cleaner raw/cleaner img*
                (fn []
-                 (raw/delete_clip_image_f32 ptr)))
+                 (raw/clip_image_f32_free ptr)))
     img*))
 
 (defn create-context

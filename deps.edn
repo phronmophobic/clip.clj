@@ -10,7 +10,7 @@
   
   :project
   {:extra-deps {org.bytedeco/llvm-platform {:mvn/version "16.0.4-1.5.9"}
-                com.phronemophobic.cljonda/clip-cpp-darwin-aarch64 {:mvn/version "45cc1cab442b3bb019dadce8dcba04d76e99e9c3"}}
+                com.phronemophobic.cljonda/clip-cpp-darwin-aarch64 {:mvn/version "f4ee24bb86680a27f83c8e8c70adbcf4cb776615"}}
    :jvm-opts ["-XX:+UnlockDiagnosticVMOptions"
               "-XX:+DebugNonSafepoints"
               "-XX:-HeapDumpOnOutOfMemoryError"
