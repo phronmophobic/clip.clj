@@ -240,7 +240,7 @@
 
 ;; ## Limitations
 
-;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, there are set of black and white images that tend score highly for unrelated queries.
+;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, there is a set of black and white images that tend to score highly for unrelated queries.
 
 (search-text "coffee")
 
