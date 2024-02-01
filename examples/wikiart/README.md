@@ -1,4 +1,5 @@
 
+# Semantic Image Search with usearch, clip, and wikiart.
 
 
 ## Get the data
@@ -10,6 +11,7 @@ _Note: Be forewarned that artists love to depict the human form in all its glory
 cd data/
 
 git lfs install
+# around 100gb
 git clone https://huggingface.co/datasets/huggan/wikiart
 
 ```
@@ -20,6 +22,7 @@ See https://github.com/monatis/clip.cpp for more info on models and usage.
 
 ```sh
 mkdir -p models
+# around 290mb
 (cd models && curl -L -O 'https://huggingface.co/mys/ggml_CLIP-ViT-B-32-laion2B-s34B-b79K/resolve/main/CLIP-ViT-B-32-laion2B-s34B-b79K_ggml-model-f16.gguf')
 ```
 
