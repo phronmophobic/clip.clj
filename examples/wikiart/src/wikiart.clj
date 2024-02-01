@@ -115,7 +115,7 @@
 
 ;; Query Steps:
 ;; 1. Create an embedding vector for the query string
-;; 2. Search the vector database for the 4 "nearest" image vectors
+;; 2. Search the vector database for 4 image vectors that are nearest to the embedding vector for our query string
 
 ;; That's it!
 
@@ -133,7 +133,7 @@
 
 ;; Hmmmm, that didn't help. Let's try something else. Forget about category theory for a second and recall the game "20 questions". In the game 20 questions, one person picks a secret, random object. The object is usually something like a bike, chair, or maybe even an elephant. It doesn't matter. The point of the game is for the other player(s) to try to guess secret object. The guessers are allowed to ask up to 20 yes or no questions that the object picker must answer truthfully.
 
-;; Some example question a guesser might ask:
+;; Some example questions a guesser might ask:
 ;;- "Is it alive?"
 ;;- "Can you eat it?"
 ;;- "Is it bigger than a microwave?"
@@ -146,7 +146,7 @@
       (map (fn [_] (rand-nth [true false]) ))
       (range 20))
 
-;; The first element of the vector corresponds to the answer for the first question and so on.
+;; The first element of the vector corresponds to the answer for the first question, second element to the answer of the second question, and so on.
 
 ;; If you can imagine filling out the answers for a bunch of objects, you can start to gain intuition for these vectors. One thing you might notice is that similar objects will have similar vectors (maybe only one or two answers differ). Another thing you might realize is that it makes a big difference _which_ questions you ask. As a dumb example, if you ask both "Is it bigger than house?" and "Is it bigger than a tree?", the answers will largely overlap which makes one of the questions redundant.
 
@@ -162,7 +162,9 @@
       (map (fn [_] (rand)))
       (range 20))
 
-;; This vector of floating point numbers is essentially the embedding vector we were trying to figure out. **An embedding vector can be thought of as the collection of answers to a series of questions.** Figuring out things like which "questions" ask, how many is the right number, and even filling in the answers for a given image or query is beyond the scope of this post, but hopefully this analogy gives you an intuition for what we're dealing with here. For more information, you can check out the research behind [clip](https://openai.com/research/clip).
+;; This vector of floating point numbers is essentially the embedding vector we were trying to figure out. **An embedding vector can be thought of as the collection of answers to a series of questions.** Typically, if a vector has answers to `n` questions, then we say that it has `n` dimensions. Figuring out things like which "questions" ask, how many is the right number, and even filling in the answers for a given image or query is beyond the scope of this post, but hopefully this analogy gives you an intuition for what we're dealing with here. For more information, you can check out the research behind [clip](https://openai.com/research/clip).
+
+;; _Note: If you read about embedding vectors, no one will describe them as having answers to a series of questions. This is really about building a mental model for how these things behave._
 
 ;; Let's take a look at a real embedding vector.
 
@@ -172,15 +174,15 @@
 
 (util/image->embedding (io/file "data" "kitten.jpg"))
 
-;; The main differences between this vector and our hypothetical vector is that the values of this vector are in the range of [-1, 1] and that there are 512 values.
+;; The main differences between these real vectors and our hypothetical vector is that the values of this vector are in the range of [-1, 1] and that there are 512 values (or dimensions).
 
 ;; ### Comparing Embedding Vectors
 
-;; Hopefully, we now have a fuzzy idea of what an embedding vector is. How does that help with search? Going back to our 20 questions thought experiment, you may remember that similar objects will have provide answers, and hence, similar vectors. Even though we've upgraded our vectors by making them longer and giving answers on a spectrum, the same idea still applies.
+;; Hopefully, we now have a fuzzy idea of what an embedding vector is. How does that help with search? Going back to our 20 questions thought experiment, you may remember that similar objects will have similar answers, and hence, have similar vectors. Even though we've upgraded our vectors by making them longer and giving answers on a spectrum, the same idea still applies. Similar objects will correspond to similar vectors.
 
 ;; We didn't actually specify an implementation for calculating the similarity between vectors. For the simple case of yes/no answers, one obvious way to do it is to just count the number questions where two vectors give same answer. We can then use the number of shared answers as a similarity score. Another way to think about it is to count the number of questions where the answer differs. Counting mismatched answers gives us a _difference_ score rather than a _similarity_ score. It turns out that for more complicated cases, thinking about the _difference_ between vectors is easier than thinking about their similarity.
 
-;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called hamming distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use hamming and euclidean distance for our distance metrics. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
+;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called the Manhattan distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use  euclidean distance for our distance metric. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
 
 (search-text "euclidean geometry")
 
@@ -237,7 +239,7 @@
 
 ;; ## Limitations
 
-;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, there are set of black and white images that tend score highly to unrelated queries.
+;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, there are set of black and white images that tend score highly for unrelated queries.
 
 (search-text "coffee")
 
