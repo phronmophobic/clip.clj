@@ -45,9 +45,9 @@ See https://github.com/monatis/clip.cpp for more info on models and usage.
 
 ## Resources
 
-For a more involved example, check out
+For a more involved example, check out this [example](examples/wikiart).
 
-For a conceptual overview, see [Semantic Image Search with Clojure](https://phronmophobic.github.io/clip.clj/semantic-image-search-with-clojure/)
+For a conceptual overview, see [Semantic Image Search with Clojure](https://phronmophobic.github.io/clip.clj/semantic-image-search-with-clojure/).
 
 ## License
 
