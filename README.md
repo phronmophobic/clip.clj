@@ -42,9 +42,16 @@ mkdir -p models
 
 See https://github.com/monatis/clip.cpp for more info on models and usage.
 
+
+## Resources
+
+For a more involved example, check out
+
+For a conceptual overview, see [Semantic Image Search with Clojure](https://phronmophobic.github.io/clip.clj/semantic-image-search-with-clojure/)
+
 ## License
 
- The MIT License (MIT)
+The MIT License (MIT)
 
 Copyright © 2024 Adrian Smith
 
