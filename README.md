@@ -14,6 +14,8 @@ com.phronemophobic.cljonda/clip-cpp-darwin-x86-64 {:mvn/version "f4ee24bb86680a2
 
 ## Quick Start
 
+See https://github.com/monatis/clip.cpp for more info on models and usage.
+
 Download a model:
 
 ```sh
