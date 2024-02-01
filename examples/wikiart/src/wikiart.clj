@@ -87,6 +87,7 @@
 (search-text "bigfoot")
 (search-text "lord of the rings")
 (search-text "hogwarts")
+(search-text "where's waldo")
 
 ;; ## Reverse Image Search
 
