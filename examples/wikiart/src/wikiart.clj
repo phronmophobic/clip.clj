@@ -69,6 +69,8 @@
 
 ;; # Semantic Image Search with Clojure
 
+;; _February 1st, 2024_
+
 ;; In this post we'll be exploring the ideas behind semantic image search and vector databases using the [wikiart dataset](https://huggingface.co/datasets/huggan/wikiart). Our goal is to search the 81,444 available images using plain english. On the implementation side, we would like to be really lazy. Ideally, we could just shove all the images into a "vectordb", pass it the plain english query, and get reasonable results.
 
 ;; For the most part it works.
@@ -261,7 +263,7 @@
 
 ;; ## Conclusion
 
-;; Exploring vector databases by implementing semantic image search was fun, interesting, and not too much work. It's pretty surprising that finding matching images just from a plain english query and access to the raw images mostly just works. There are still a few kinks to work out, but it seems like progress is forthcoming.
+;; Exploring vector databases by implementing semantic image search was fun, interesting, and not too much work. It's pretty surprising that finding matching images from a plain english query and access to the raw images mostly just works. There are still a few kinks to work out, but it seems like more improvements are forthcoming.
 
 (search-text "nap time!")
 
