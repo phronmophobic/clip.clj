@@ -30,6 +30,7 @@ mkdir -p models
 # This took over 2 hours on my computer.
 # It also requires an extra 32gb on top of the already downloaded models and data.
 # Almost all of the extra disk space is creating an indexed copy of the wikiart image data.
+# which isn't strictly necessary, but really speeds things up.
 clojure -X:project wikiart.index/index-all
 ```
 
