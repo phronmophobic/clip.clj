@@ -1,0 +1,8 @@
+data
+tmp*
+wikiart.db
+wikiart.usearch
+.clerk
+.cpcache
+docs/
+models/

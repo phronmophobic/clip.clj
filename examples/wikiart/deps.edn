@@ -1,0 +1,115 @@
+{:deps {org.clojure/clojure {:mvn/version "1.12.0-alpha3"}
+        techascent/tech.ml.dataset {:mvn/version "7.023"}
+        com.phronemophobic/clip-clj {;; :mvn/version "1.2"
+                                     :local/root "../../"
+                                     }
+        com.phronemophobic/membrane {:mvn/version "0.14.3-beta"}
+
+        ;; native deps
+        com.phronemophobic.cljonda/clip-cpp-linux-x86-64 {:mvn/version "f4ee24bb86680a27f83c8e8c70adbcf4cb776615"}
+        com.phronemophobic.cljonda/clip-cpp-darwin-aarch64 {:mvn/version "f4ee24bb86680a27f83c8e8c70adbcf4cb776615"}
+        com.phronemophobic.cljonda/clip-cpp-darwin-x86-64 {:mvn/version "f4ee24bb86680a27f83c8e8c70adbcf4cb776615"}
+
+        com.phronemophobic/usearch-clj {:mvn/version "1.0"}
+        com.phronemophobic.cljonda/usearch-c-darwin-aarch64 {:mvn/version "ce54b814a8a10f4c0c32fee7aad9451231b63f75-SNAPSHOT"}
+
+        datalevin/datalevin {:mvn/version "0.8.25"}
+
+        io.github.nextjournal/clerk {:mvn/version "0.14.919"}
+
+
+        ;; tmd parquet
+        ;; https://techascent.github.io/tech.ml.dataset/tech.v3.libs.parquet.html
+        org.apache.parquet/parquet-hadoop {:mvn/version "1.12.0"
+                                           :exclusions [org.slf4j/slf4j-log4j12]}
+        org.apache.hadoop/hadoop-common              {:mvn/version "3.3.0"
+                                                      :exclusions  [com.sun.jersey/jersey-core
+                                                                    com.sun.jersey/jersey-json
+                                                                    com.sun.jersey/jersey-server
+                                                                    com.sun.jersey/jersey-servlet
+
+                                                                    dnsjava/dnsjava
+
+                                                                    org.eclipse.jetty/jetty-server
+                                                                    org.eclipse.jetty/jetty-servlet
+                                                                    org.eclipse.jetty/jetty-util
+                                                                    org.eclipse.jetty/jetty-webapp
+
+                                                                    javax.activation/javax.activation-api
+                                                                    javax.servlet.jsp/jsp-api
+                                                                    javax.servlet/javax.servlet-api
+
+                                                                    io.netty/netty-codec
+                                                                    io.netty/netty-handler
+                                                                    io.netty/netty-transport
+                                                                    io.netty/netty-transport-native-epoll
+
+                                                                    org.codehaus.jettison/jettison
+
+                                                                    org.apache.zookeeper/zookeeper
+
+                                                                    org.apache.curator/curator-recipes
+                                                                    org.apache.curator/curator-client
+                                                                    org.apache.htrace/htrace-core4
+
+                                                                    org.apache.hadoop.thirdparty/hadoop-shaded-protobuf_3_7
+                                                                    org.apache.hadoop/hadoop-auth
+
+
+                                                                    org.apache.kerby/kerb-core
+
+                                                                    commons-cli/commons-cli
+                                                                    commons-net/commons-net
+                                                                    org.apache.commons/commons-lang3
+                                                                    org.apache.commons/commons-text
+                                                                    org.apache.commons/commons-configuration2
+
+                                                                    com.google.re2j/re2j
+                                                                    com.google.code.findbugs/jsr305
+
+                                                                    com.jcraft/jsch
+
+                                                                    log4j/log4j
+                                                                    org.slf4j/slf4j-log4j12]
+                                                      }
+        ;; We literally need this for 1 POJO formatting object.
+        org.apache.hadoop/hadoop-mapreduce-client-core {:mvn/version "3.3.0"
+                                                        :exclusions  [org.slf4j/slf4j-log4j12
+                                                                      org.apache.avro/avro
+                                                                      org.apache.hadoop/hadoop-yarn-client
+                                                                      org.apache.hadoop/hadoop-yarn-common
+                                                                      org.apache.hadoop/hadoop-annotations
+                                                                      org.apache.hadoop/hadoop-hdfs-client
+                                                                      io.netty/netty
+                                                                      com.google.inject.extensions/guice-servlet]}
+        ;; M-1 mac support for snappy
+        org.xerial.snappy/snappy-java {:mvn/version "1.1.8.4"}
+        com.taoensso/nippy {:mvn/version "3.3.0"}
+        
+        
+        
+        }
+ :paths ["src"]
+ :aliases
+ {:project
+  {:jvm-opts ["-Xmx16G"
+              "-XX:+UnlockDiagnosticVMOptions"
+              "-XX:+DebugNonSafepoints"
+              "-XX:-HeapDumpOnOutOfMemoryError"
+              "--add-opens=java.base/java.nio=ALL-UNNAMED"
+              "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"]
+   :extra-deps {com.phronemophobic/membrane {:mvn/version "0.14.3-beta"}
+                com.phronemophobic.membrane/skialib-macosx-aarch64 {:mvn/version "0.14-beta"}}}
+
+  :generate-docs
+  {:jvm-opts ["-Xmx16G"
+              "-XX:+UnlockDiagnosticVMOptions"
+              "-XX:+DebugNonSafepoints"
+              "-XX:-HeapDumpOnOutOfMemoryError"
+              "--add-opens=java.base/java.nio=ALL-UNNAMED"
+              "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"]
+   :exec-fn nextjournal.clerk/build!
+   :exec-args {:paths ["src/wikiart.clj"]
+               :out-path "docs/"
+               ;;:bundle true
+               }}}}
