@@ -69,7 +69,7 @@
 
 ;; # Semantic Image Search with Clojure
 
-;; In this post we'll be exploring the ideas behind semantic image search and vector databases using the [wikiart dataset](https://huggingface.co/datasets/huggan/wikiart). Our goal is to be able to search the 81,444 available images using plain english. On the implementation side, we'd like to be really lazy. Ideally, we'd like to shove all the images into a "vectordb", pass it the plain english query, and get reasonable results.
+;; In this post we'll be exploring the ideas behind semantic image search and vector databases using the [wikiart dataset](https://huggingface.co/datasets/huggan/wikiart). Our goal is to search the 81,444 available images using plain english. On the implementation side, we would like to be really lazy. Ideally, we could just shove all the images into a "vectordb", pass it the plain english query, and get reasonable results.
 
 ;; For the most part it works.
 
@@ -107,22 +107,22 @@
 
 ;; To implement our semantic search, we use an [OpenClip](https://github.com/mlfoundations/open_clip) [model](https://huggingface.co/laion/CLIP-ViT-B-32-laion2B-s34B-b79K) to create vector embeddings. We then use [usearch](https://github.com/unum-cloud/usearch/) to store the vectors and find matching results. If that all sounded like gibberish, don't worry. We'll cover the basics.
 
-;; To explain how everything works, let's list the steps that were taken and then we'll explain the reasoning.
+;; To explain how everything works, let's outline the steps taken and then we'll explain the reasoning behind them.
 
 ;; Prerocessing steps:
-;; 1. Download all the data and models
-;; 2. Derive an embedding vector for each image
-;; 3. Put all the embedding vectors in a vector database (we used [usearch](https://github.com/unum-cloud/usearch/))
+;; 1. Download all the data and models.
+;; 2. Derive an embedding vector for each image.
+;; 3. Put all the embedding vectors in a vector database (we used [usearch](https://github.com/unum-cloud/usearch/)).
 
 ;; Query Steps:
-;; 1. Create an embedding vector for the query string
-;; 2. Search the vector database for 4 image vectors that are nearest to the embedding vector for our query string
+;; 1. Create an embedding vector for the query string.
+;; 2. Search the vector database for 4 image vectors nearest to the embedding vector of our query string.
 
 ;; That's it!
 
 ;; ### Embedding Vectors
 
-;; Based on the implementation, it seems like "embedding vectors" are important, but what are they? As clojurians, we know how to solve that problem. Let's check the etymology. The term "embedding" comes from mathematics:
+;; Based on the implementation, it seems like "embedding vectors" are important, but what are they? As clojurians, we know how to solve that problem. Let's check the etymology! The term "embedding" comes from mathematics:
 
 ;; > In mathematics, an embedding (or imbedding[1]) is one instance of some mathematical structure contained within another instance, such as a group that is a subgroup.
 
@@ -132,7 +132,7 @@
 
 (search-text "uh oh")
 
-;; Hmmmm, that didn't help. Let's try something else. Forget about category theory for a second and recall the game "20 questions". In the game 20 questions, one person picks a secret, random object. The object is usually something like a bike, chair, or maybe even an elephant. It doesn't matter. The point of the game is for the other player(s) to try to guess secret object. The guessers are allowed to ask up to 20 yes or no questions that the object picker must answer truthfully.
+;; Hmmmm, that didn't help. Let's try something else. Forget about category theory for a second and recall the game "20 questions". In the game 20 questions, one person picks a secret, random object. The object is usually something like a bike, chair, or maybe even an elephant. It doesn't matter. The point of the game is for the other player(s) to try to guess the secret object. The guessers are allowed to ask up to 20 yes or no questions that the object picker must answer truthfully.
 
 ;; Some example questions a guesser might ask:
 ;;- "Is it alive?"
@@ -141,7 +141,7 @@
 
 ;; The surprising thing about the game 20 questions is that the guessers actually have a pretty decent chance of figuring out the secret object. That's interesting, but what does that have to do with anything? It turns out the answers given to the guesser's questions are similar to an embedding vector.
 
-;; While guessing in a game of 20 questions, you often pick different questions depending on all the answers you've received so far, but let's pretend that you ask the same 20 questions every time. We can represent all the responses as a vector of 20 boolean values:
+;; While guessing in a game of 20 questions, you usually pick different questions each game, but let's pretend that you ask the same 20 questions every time. We can represent all the responses as a vector of 20 boolean values:
 
 (into []
       (map (fn [_] (rand-nth [true false]) ))
@@ -149,7 +149,7 @@
 
 ;; The first element of the vector corresponds to the answer of the first question, the second element corresponds to the answer of the second question, and so on.
 
-;; If you can imagine filling out the answers for a bunch of objects, you can start to gain intuition for these vectors. One thing you might notice is that similar objects will have similar vectors (maybe only one or two answers differ). Another thing you might realize is that it makes a big difference _which_ questions you ask. As a dumb example, if you ask both "Is it bigger than house?" and "Is it bigger than a tree?", the answers will largely overlap which makes one of the questions redundant.
+;; If you can imagine filling out the answers for a bunch of objects, you can start to gain an intuition for these vectors. One thing you might notice is that similar objects will have similar vectors (maybe only one or two answers differ). Another thing you might realize is that it makes a big difference _which_ questions you ask. As a dumb example, if you ask both "Is it bigger than house?" and "Is it bigger than a tree?", the answers will largely overlap which makes one of the questions redundant.
 
 ;; You can also imagine that if you ask enough questions, you might be able to uniquely identify just about any object.
 
@@ -163,7 +163,7 @@
       (map (fn [_] (rand)))
       (range 20))
 
-;; This vector of floating point numbers is essentially the embedding vector we were trying to figure out. **An embedding vector can be thought of as the collection of answers to a series of questions.** Typically, if a vector has answers to `n` questions, then we say that it has `n` dimensions. Figuring out things like which "questions" ask, how many is the right number, and even filling in the answers for a given image or query is beyond the scope of this post, but hopefully this analogy gives you an intuition for what we're dealing with here. For more information, you can check out the research behind [clip](https://openai.com/research/clip).
+;; This vector of floating point numbers is essentially the embedding vector we were trying to figure out. **An embedding vector can be thought of as a collection of answers to a series of questions.** Typically, if a vector has answers to `n` questions, then we say that it has `n` dimensions. Figuring out things like which "questions" ask, how many is the right number, and even filling in the answers for a given image or query is beyond the scope of this post, but hopefully this analogy gives you an intuition for what we're dealing with here. For more information, you can check out the research behind [clip](https://openai.com/research/clip).
 
 ;; _Note: If you read about embedding vectors, no one will describe them as having answers to a series of questions. This is really about building a mental model for how these things behave._
 
@@ -175,7 +175,7 @@
 
 (util/image->embedding (io/file "data" "kitten.jpg"))
 
-;; The main differences between these real vectors and our hypothetical vector is that the values of this vector are in the range of [-1, 1] and that there are 512 values (or dimensions).
+;; The main differences between these real vectors and our hypothetical vectors are that the values of this vector are in the range of [-1, 1] and that there are 512 values (or dimensions).
 
 ;; ### Comparing Embedding Vectors
 
@@ -183,7 +183,7 @@
 
 ;; We didn't actually specify an implementation for calculating the similarity between vectors. For the simple case of yes/no answers, one obvious way to do it is to just count the number questions where two vectors give same answer. We can then use the number of shared answers as a similarity score. Another way to think about it is to count the number of questions where the answer differs. Counting mismatched answers gives us a _difference_ score rather than a _similarity_ score. It turns out that for more complicated cases, thinking about the _difference_ between vectors is easier than thinking about their similarity.
 
-;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways to calculate a difference and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called the Manhattan distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use  euclidean distance for our distance metric. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
+;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways to calculate a difference and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called the Manhattan distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use  euclidean distance as our distance metric. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
 
 (search-text "euclidean geometry")
 
@@ -202,7 +202,7 @@
 (defn cosine-similarity
   "Returns the cosine similarity between two embeddings as a float in [0.0, 1.0].
 
-  The embeddings should be float arrays."
+  The embeddings should be normalized float arrays."
   [^floats emb1 ^floats emb2]
   (let [num (alength emb1)]
     (loop [dot-product (float 0)
@@ -233,14 +233,14 @@
     "cute"
     "fuzzy"
     "banana"
-    "programming language"
-    "clojure"])))
+    "clojure"
+    "programming language"])))
 
 ;; As you can see, the distance between "clojure" and the kitten image is much farther than the distance between the image and "cute fuzzy white kitten". The reason there's still distance between "cute fuzzy white kitten with a fabric background" and the kitten image is that you would have to perfectly describe the kitten image with your embedding to have a distance of zero. Our description is pretty close, but you could still include more details to distinguish this image from other images with cute kittens.
 
 ;; ## Limitations
 
-;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, there is a set of black and white images that tend to score highly for unrelated queries.
+;; Overall, I'm pretty happy with the results, but there are still some rough spots. For whatever reason, certain black and white images tend to score highly for unrelated queries.
 
 (search-text "coffee")
 
