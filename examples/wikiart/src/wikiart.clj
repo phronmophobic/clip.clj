@@ -112,7 +112,7 @@
 ;; Prerocessing steps:
 ;; 1. Download all the data and models
 ;; 2. Derive an embedding vector for each image
-;; 3. Put all the embedding vectors in a vector database (we used usearch)
+;; 3. Put all the embedding vectors in a vector database (we used [usearch](https://github.com/unum-cloud/usearch/))
 
 ;; Query Steps:
 ;; 1. Create an embedding vector for the query string
@@ -147,7 +147,7 @@
       (map (fn [_] (rand-nth [true false]) ))
       (range 20))
 
-;; The first element of the vector corresponds to the answer for the first question, second element to the answer of the second question, and so on.
+;; The first element of the vector corresponds to the answer of the first question, the second element corresponds to the answer of the second question, and so on.
 
 ;; If you can imagine filling out the answers for a bunch of objects, you can start to gain intuition for these vectors. One thing you might notice is that similar objects will have similar vectors (maybe only one or two answers differ). Another thing you might realize is that it makes a big difference _which_ questions you ask. As a dumb example, if you ask both "Is it bigger than house?" and "Is it bigger than a tree?", the answers will largely overlap which makes one of the questions redundant.
 
@@ -183,7 +183,7 @@
 
 ;; We didn't actually specify an implementation for calculating the similarity between vectors. For the simple case of yes/no answers, one obvious way to do it is to just count the number questions where two vectors give same answer. We can then use the number of shared answers as a similarity score. Another way to think about it is to count the number of questions where the answer differs. Counting mismatched answers gives us a _difference_ score rather than a _similarity_ score. It turns out that for more complicated cases, thinking about the _difference_ between vectors is easier than thinking about their similarity.
 
-;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called the Manhattan distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use  euclidean distance for our distance metric. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
+;; Unfortunately, our vectors are full of floating point numbers, not booleans. There's not just one obvious way to calculate the distance between two vectors. It seems like there would be many ways to calculate a difference and you would be right. One way to calculate the distance between two vectors is to just do elementwise subtraction between the two vectors and add up all the differences. This distance metric is called the Manhattan distance. For some of you, this may be giving flashbacks to one of your classes from school years ago. Even though we're dealing with vectors with hundreds of elements, the distance metrics we use for 1d, 2d, and 3d space can apply to our n-dimensional embedding vectors. For example, we can use  euclidean distance for our distance metric. There are also about a dozen others. The `usearch` library has the following: cos, divergence, hamming, haversine, ip, jaccard, l2sq (euclidean), pearson, sorensen, and tanimoto. I don't even know what half of them do, but the point is we have options.
 
 (search-text "euclidean geometry")
 
@@ -264,6 +264,14 @@
 ;; Exploring vector databases by implementing semantic image search was fun, interesting, and not too much work. It's pretty surprising that finding matching images just from a plain english query and access to the raw images mostly just works. There are still a few kinks to work out, but it seems like progress is forthcoming.
 
 (search-text "nap time!")
+
+;; ## More Resources
+
+;;- [OpenClip](https://github.com/mlfoundations/open_clip)
+;;- [Vector Symbolic Architectures in Clojure](https://www.youtube.com/watch?v=j7ygjfbBJD0)
+;;- [clip.clj](https://github.com/phronmophobic/clip.clj)
+;;- [usearch.clj](https://github.com/phronmophobic/usearch.clj)
+
 
 ^{:nextjournal.clerk/visibility {:code :hide :result :hide}}
 (comment
