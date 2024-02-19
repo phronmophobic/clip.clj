@@ -88,7 +88,7 @@
   (let [tokens* (clip_tokensByReference.)
         _ (raw/clip_tokenize ctx text tokens*)
 
-        params (raw/clip_get_vision_hparams ctx)
+        params (raw/clip_get_text_hparams ctx)
         vec-dim (:projection_dim params)
 
         vec (Memory.
