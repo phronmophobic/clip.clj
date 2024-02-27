@@ -111,7 +111,7 @@
 
 ;; To explain how everything works, let's outline the steps taken and then we'll explain the reasoning behind them.
 
-;; Prerocessing steps:
+;; Preprocessing steps:
 ;; 1. Download all the data and models.
 ;; 2. Derive an embedding vector for each image.
 ;; 3. Put all the embedding vectors in a vector database (we used [usearch](https://github.com/unum-cloud/usearch/)).
